@@ -1,8 +1,8 @@
 import pytest
-from model import Circle, Square, Sphere
+from model import Circle, Cone, Cube, Cuboid, Cylinder, Pyramid, Rectangle, Rhombus, Square, Sphere, Trapezoid, Triangle
 
 
-def test_area_and_perimeter():
+def test_model():
     circle = Circle(radius=5)
     assert circle.name == 'Circle'
     assert circle.area() == 78.53981633974483
@@ -13,12 +13,49 @@ def test_area_and_perimeter():
     assert square.area() == 53.29
     assert square.perimeter() == 29.2
 
+    rect = Rectangle(a=5, b=6.5)
+    assert rect.name == 'Rectangle'
+    assert rect.area() == 32.5
+
+    triangle = Triangle(a=5, b=6, c=7)
+    assert triangle.name == 'Triangle'
+    assert triangle.area() == 14.696938456699069
+    assert triangle.perimeter() == 18
+
+    trapezoid = Trapezoid(a=5, b=10, height=6)
+    assert trapezoid.name == 'Trapezoid'
+    assert trapezoid.area() == 45
+
+    rhombus = Rhombus(a=10, h=15)
+    assert rhombus.name == 'Rhombus'
+    assert rhombus.area() == 150
+
     sphere = Sphere(radius=5)
     assert sphere.name == 'Sphere'
     assert sphere.area() == 314.1592653589793
+    assert sphere.volume() == 523.5987755982989
 
+    cube = Cube(a=5)
+    assert cube.name == 'Cube'
+    assert cube.area() == 150
+    assert cube.volume() == 125
 
-def test_volume():
-    sphere = Sphere(radius=8)
-    assert sphere.volume() == 2144.660584850632
-    assert sphere.name == 'Sphere'
+    cuboid = Cuboid(a=5, b=10, c=15)
+    assert cuboid.name == 'Cuboid'
+    assert cuboid.area() == 550
+    assert cuboid.volume() == 750
+
+    pyramid = Pyramid(a=5, h=10)
+    assert pyramid.name == 'Pyramid'
+    assert pyramid.area() == 128.07764064044153
+    assert pyramid.volume() == 83.33333333333333
+
+    cylinder = Cylinder(radius=5, h=10)
+    assert cylinder.name == 'Cylinder'
+    assert cylinder.area() == 471.23889803846896
+    assert cylinder.volume() == 785.3981633974483
+
+    cone = Cone(radius=5, h=10)
+    assert cone.name == 'Cone'
+    assert cone.area() == 254.160184615763
+    assert cone.volume() == 261.79938779914943
