@@ -1,4 +1,4 @@
-from math import sqrt
+from math import acos, sqrt, tan
 import streamlit as st
 import pythreejs as THREE
 
@@ -8,24 +8,78 @@ from model import *
 SEGMENTS = 32
 
 
-# def createLine(points):
-#     let vertices = [];
-#     let width = 0;
-#     let height = 0;
-#     for (p of points) {
-#     if (p[0] > width) {
-#         width = p[0];
-#     }
-#     if (p[1] > height) {
-#         height = p[1];
-#     }
-#     vertices.push(new THREE.Vector3(p[0], p[1], p[2]));
-#     }
-#     const geometry = new THREE.BufferGeometry().setFromPoints(vertices);
-#     let line = new THREE.Line(geometry);
-#     line.translateX(-width / 2);
-#     line.translateY(-height / 2);
-#     return line;
+def create_2d_mesh(*points):
+    width = max([p[0] for p in points])
+    height = max([p[1] for p in points])
+    geometry = THREE.Geometry(vertices=points)
+    lines = THREE.Line(geometry, THREE.LineBasicMaterial(color="#000000"))
+    lines.position = (-width / 2, -height / 2, 0)
+    return lines
+
+
+def create_circle_mesh(radius):
+    geometry = THREE.CircleGeometry(radius, segments=50)
+    return THREE.Mesh(geometry, THREE.MeshBasicMaterial(color="#000000"))
+
+
+def create_rectangle_mesh(width, height):
+    return create_2d_mesh(
+        (0, 0, 0),
+        (width, 0, 0),
+        (width, height, 0),
+        (0, height, 0),
+        (0, 0, 0)
+    )
+
+
+def create_square_mesh(size):
+    return create_rectangle_mesh(size, size)
+
+
+def calculate_third_triangle_point(alpha, beta, c):
+    x = (c * tan(beta)) / (tan(alpha) + tan(beta))
+    y = x * tan(alpha)
+    return x, y
+
+
+def create_triangle_mesh(a, b, c):
+    (a, b, c) = sorted((a, b, c))
+    if a + b < c:
+        raise ValueError("Invalid triangle size")
+    alpha = acos((b ** 2 + c ** 2 - a ** 2) / (2.0 * b * c))
+    beta = acos((-b ** 2 + c ** 2 + a ** 2) / (2.0 * a * c))
+    (x, y) = calculate_third_triangle_point(alpha, beta, c)
+    return create_2d_mesh(
+        (0, 0, 0),
+        (c, 0, 0),
+        (x, y, 0),
+        (0, 0, 0)
+    )
+
+
+def create_trapezoid_mesh(a, b, h):
+    (a, b) = sorted((a, b))
+    x = (a + b) / 2
+    return create_2d_mesh(
+        (0, 0, 0),
+        (b, 0, 0),
+        (x, h, 0),
+        (x - a, h, 0),
+        (0, 0, 0)
+    )
+
+
+def create_rhombus_mesh(a, h):
+    if h > a:
+        raise ValueError("Invalid rhombus size")
+    x = sqrt(a ** 2 - h ** 2)
+    return create_2d_mesh(
+        (0, 0, 0),
+        (a, 0, 0),
+        (x + a, h, 0),
+        (x, h, 0),
+        (0, 0, 0)
+    )
 
 
 def create_3d_mesh(geometry):
@@ -72,7 +126,19 @@ def get_3d_camera():
 
 def write_visualization(figure):
     obj = None
-    if isinstance(figure, Sphere):
+    if isinstance(figure, Circle):
+        obj = create_circle_mesh(figure.radius)
+    elif isinstance(figure, Rectangle):
+        obj = create_rectangle_mesh(figure.a, figure.b)
+    elif isinstance(figure, Square):
+        obj = create_square_mesh(figure.a)
+    elif isinstance(figure, Triangle):
+        obj = create_triangle_mesh(figure.a, figure.b, figure.c)
+    elif isinstance(figure, Trapezoid):
+        obj = create_trapezoid_mesh(figure.a, figure.b, figure.height)
+    elif isinstance(figure, Rhombus):
+        obj = create_rhombus_mesh(figure.a, figure.height)
+    elif isinstance(figure, Sphere):
         obj = create_sphere_mesh(figure.radius)
     elif isinstance(figure, Cuboid):
         obj = create_cuboid_mesh(figure.a, figure.b, figure.c)
@@ -91,7 +157,8 @@ def write_visualization(figure):
     view_width = 700
     view_height = 500
     target = (0, 0, 0)
-    camera = THREE.CombinedCamera(position=[60, 60, 60], width=view_width, height=view_height)
+    camera = THREE.CombinedCamera(
+        position=[60, 60, 60], width=view_width, height=view_height)
     # camera.mode = 'orthographic'
     camera.lookAt(target)
     # camera = get_3d_camera()
@@ -101,8 +168,7 @@ def write_visualization(figure):
     scene = THREE.Scene(children=[obj, camera, light])
 
     renderer = THREE.Renderer(scene=scene, camera=camera, controls=[orbit],
-                        width=view_width, height=view_height)
-
+                              width=view_width, height=view_height)
 
     from ipywidgets import embed
     snippet = embed.embed_snippet(views=renderer)
@@ -121,28 +187,28 @@ option = st.selectbox('Select a shape:', options=options)
 
 figure = None
 if option == 'Circle':
-    r = st.number_input('Radius:')
+    r = st.number_input('Radius:', value=25)
     figure = Circle(radius=r)
 elif option == 'Square':
-    side = st.number_input('Side:')
+    side = st.number_input('Side:', value=40)
     figure = Square(a=side)
 elif option == 'Rectangle':
-    a = st.number_input('A:')
-    b = st.number_input('B:')
+    a = st.number_input('A:', value=30)
+    b = st.number_input('B:', value=40)
     figure = Rectangle(a=a, b=b)
 elif option == 'Triangle':
-    a = st.number_input('A:')
-    b = st.number_input('B:')
-    c = st.number_input('C:')
+    a = st.number_input('A:', value=20)
+    b = st.number_input('B:', value=30)
+    c = st.number_input('C:', value=40)
     figure = Triangle(a=a, b=b, c=c)
 elif option == 'Trapezoid':
-    a = st.number_input('A:')
-    b = st.number_input('B:')
-    h = st.number_input('H:')
+    a = st.number_input('A:', value=30)
+    b = st.number_input('B:', value=40)
+    h = st.number_input('H:', value=20)
     figure = Trapezoid(a=a, b=b, height=h)
 elif option == 'Rhombus':
-    a = st.number_input('A:')
-    h = st.number_input('H:')
+    a = st.number_input('A:', value=40)
+    h = st.number_input('H:', value=30)
     figure = Rhombus(a=a, h=h)
 elif option == 'Sphere':
     r = st.number_input('Radius:', value=15)
