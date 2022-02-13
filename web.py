@@ -71,15 +71,22 @@ def get_3d_camera():
 
 
 def write_visualization(figure):
-    if not figure:
-        return
+    obj = None
+    if isinstance(figure, Sphere):
+        obj = create_sphere_mesh(figure.radius)
+    elif isinstance(figure, Cuboid):
+        obj = create_cuboid_mesh(figure.a, figure.b, figure.c)
+    elif isinstance(figure, Cube):
+        obj = create_cube_mesh(figure.a)
+    elif isinstance(figure, Pyramid):
+        obj = create_pyramid_mesh(figure.a, figure.height)
+    elif isinstance(figure, Cylinder):
+        obj = create_cylinder_mesh(figure.radius, figure.height)
+    elif isinstance(figure, Cone):
+        obj = create_cone_mesh(figure.radius, figure.height)
 
-    base = THREE.Mesh(
-        THREE.BoxBufferGeometry(20, 0.1, 20),
-        THREE.MeshLambertMaterial(color='green', opacity=0.5, transparent=True),
-        position=(0, 0, 0),
-    )
-    obj = create_cube_mesh(15)
+    if not obj:
+        return
 
     view_width = 700
     view_height = 500
@@ -87,18 +94,11 @@ def write_visualization(figure):
     camera = THREE.CombinedCamera(position=[60, 60, 60], width=view_width, height=view_height)
     # camera.mode = 'orthographic'
     camera.lookAt(target)
-    # camera.zoom = 1
     # camera = get_3d_camera()
     orbit = THREE.OrbitControls(controlling=camera, target=target)
 
-    lights = [
-        THREE.PointLight(position=[200, 0, 0], color="#ffffff"),
-        THREE.PointLight(position=[0, 200, 0], color="#bbbbbb"),
-        THREE.PointLight(position=[0, 0, 200], color="#888888"),
-        THREE.AmbientLight(intensity=0.2),
-    ]
-
-    scene = THREE.Scene(children=[base, obj, camera] + lights)
+    light = THREE.PointLight(position=[200, 300, 100])
+    scene = THREE.Scene(children=[obj, camera, light])
 
     renderer = THREE.Renderer(scene=scene, camera=camera, controls=[orbit],
                         width=view_width, height=view_height)
@@ -119,7 +119,6 @@ options = ['Circle', 'Square', 'Rectangle', 'Triangle', 'Trapezoid',
 option = st.selectbox('Select a shape:', options=options)
 
 
-width = 20
 figure = None
 if option == 'Circle':
     r = st.number_input('Radius:')
@@ -146,33 +145,29 @@ elif option == 'Rhombus':
     h = st.number_input('H:')
     figure = Rhombus(a=a, h=h)
 elif option == 'Sphere':
-    r = st.number_input('Radius:')
+    r = st.number_input('Radius:', value=15)
     figure = Sphere(radius=r)
 elif option == 'Cube':
-    a = st.number_input('A:')
+    a = st.number_input('A:', value=15)
     figure = Cube(a=a)
 elif option == 'Cuboid':
-    a = st.number_input('A:')
-    b = st.number_input('B:')
-    c = st.number_input('C:')
+    a = st.number_input('A:', value=15)
+    b = st.number_input('B:', value=20)
+    c = st.number_input('C:', value=25)
     figure = Cuboid(a=a, b=b, c=c)
 elif option == 'Pyramid':
-    a = st.number_input('A:')
-    h = st.number_input('H:')
+    a = st.number_input('A:', value=30)
+    h = st.number_input('H:', value=40)
     figure = Pyramid(a=a, h=h)
 elif option == 'Cylinder':
-    r = st.number_input('Radius:')
-    h = st.number_input('H:')
+    r = st.number_input('Radius:', value=20)
+    h = st.number_input('H:', value=40)
     figure = Cylinder(radius=r, h=h)
 elif option == 'Cone':
-    r = st.number_input('Radius:')
-    h = st.number_input('H:')
+    r = st.number_input('Radius:', value=20)
+    h = st.number_input('H:', value=40)
     figure = Cone(radius=r, h=h)
     st.write(figure.volume())
 
-
-# st.write('You selected:', option)
-
-if st.button("Calculate"):
-    st.write('Why hello there')
+if figure:
     write_visualization(figure)
