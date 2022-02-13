@@ -156,13 +156,16 @@ def write_visualization(figure):
 
     view_width = 700
     view_height = 500
-    target = (0, 0, 0)
+    
+    if is_3d := isinstance(figure, Solid):
+        camera_pos = (60, 60, 60)
+    else:
+        camera_pos = (0, 0, 100)
     camera = THREE.CombinedCamera(
-        position=[60, 60, 60], width=view_width, height=view_height)
-    # camera.mode = 'orthographic'
-    camera.lookAt(target)
-    # camera = get_3d_camera()
-    orbit = THREE.OrbitControls(controlling=camera, target=target)
+        position=camera_pos, width=view_width, height=view_height)
+    camera.lookAt((0, 0, 0))
+    orbit = THREE.OrbitControls(controlling=camera, target=(0, 0, 0))
+    orbit.enableRotate = is_3d
 
     light = THREE.PointLight(position=[200, 300, 100])
     scene = THREE.Scene(children=[obj, camera, light])
