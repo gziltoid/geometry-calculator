@@ -172,9 +172,9 @@ def write_visualization(figure):
     light = THREE.PointLight(position=[200, 300, 100])
     scene = THREE.Scene(children=[obj, camera, light])
 
-    # if is_3d:
-    #     axesHelper = THREE.AxesHelper(100)
-    #     scene.add(axesHelper)
+    if is_3d:
+        axesHelper = THREE.AxesHelper(100)
+        scene.add(axesHelper)
 
     renderer = THREE.Renderer(scene=scene, camera=camera, controls=[orbit],
                               width=view_width, height=view_height)
@@ -244,23 +244,27 @@ elif option == 'Cone':
     figure = Cone(radius=r, h=h)
 
 
+def format_float(number):
+    return round(number, 2)
+
+
 try:
     if figure:
         st.caption('Result:')
-        st.write('Area:', figure.area)
+        st.write('Area:', format_float(figure.area))
         if isinstance(figure, Flat):
-            st.write('Perimeter:', figure.perimeter)
+            st.write('Perimeter:', format_float(figure.perimeter))
             if isinstance(figure, Triangle):
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    st.write('Median 1:', figure.get_median(1))
+                    st.write('Median 1:', format_float(figure.get_median(1)))
                 with col2:
-                    st.write('Median 2:', figure.get_median(2))
+                    st.write('Median 2:', format_float(figure.get_median(2)))
                 with col3:
-                    st.write('Median 3:', figure.get_median(3))
+                    st.write('Median 3:', format_float(figure.get_median(3)))
         elif isinstance(figure, Solid):
-            st.write('Volume:', figure.volume)
-            write_visualization(figure)
+            st.write('Volume:', format_float(figure.volume))
+        write_visualization(figure)
 except Exception as e:
     st.error(f'Error: {e}')
     st.exception(e)
