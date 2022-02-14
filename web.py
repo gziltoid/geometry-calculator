@@ -1,4 +1,6 @@
 from math import acos, sqrt, tan
+import sys
+import os
 import streamlit as st
 import pythreejs as THREE
 
@@ -12,14 +14,14 @@ def create_2d_mesh(*points):
     width = max([p[0] for p in points])
     height = max([p[1] for p in points])
     geometry = THREE.Geometry(vertices=points)
-    lines = THREE.Line(geometry, THREE.LineBasicMaterial(color="#000000"))
+    lines = THREE.Line(geometry, THREE.LineBasicMaterial(color="#0000ff"))
     lines.position = (-width / 2, -height / 2, 0)
     return lines
 
 
 def create_circle_mesh(radius):
     geometry = THREE.CircleGeometry(radius, segments=50)
-    return THREE.Mesh(geometry, THREE.MeshBasicMaterial(color="#000000"))
+    return THREE.Mesh(geometry, THREE.MeshBasicMaterial(color="#5f9ea0"))
 
 
 def create_rectangle_mesh(width, height):
@@ -83,7 +85,7 @@ def create_rhombus_mesh(a, h):
 
 
 def create_3d_mesh(geometry):
-    return THREE.Mesh(geometry, THREE.MeshStandardMaterial())
+    return THREE.Mesh(geometry, THREE.MeshStandardMaterial(color="#6495ed"))
 
 
 def create_sphere_mesh(radius):
@@ -156,7 +158,7 @@ def write_visualization(figure):
 
     view_width = 700
     view_height = 500
-    
+
     if is_3d := isinstance(figure, Solid):
         camera_pos = (60, 60, 60)
     else:
@@ -170,12 +172,16 @@ def write_visualization(figure):
     light = THREE.PointLight(position=[200, 300, 100])
     scene = THREE.Scene(children=[obj, camera, light])
 
+    # if is_3d:
+    #     axesHelper = THREE.AxesHelper(100)
+    #     scene.add(axesHelper)
+
     renderer = THREE.Renderer(scene=scene, camera=camera, controls=[orbit],
                               width=view_width, height=view_height)
 
     from ipywidgets import embed
     snippet = embed.embed_snippet(views=renderer)
-    html = embed.html_template.format(title="", snippet=snippet)
+    html = embed.html_template.format(title="Plot", snippet=snippet)
 
     import streamlit.components.v1 as components
     components.html(html, width=view_width, height=view_height)
@@ -183,8 +189,8 @@ def write_visualization(figure):
 
 st.write("""# Geometry Calculator""")
 
-options = ['Circle', 'Square', 'Rectangle', 'Triangle', 'Trapezoid',
-           'Rhombus', 'Sphere', 'Cube', 'Cuboid', 'Pyramid', 'Cylinder', 'Cone']
+options = ('Circle', 'Square', 'Rectangle', 'Triangle', 'Trapezoid',
+           'Rhombus', 'Sphere', 'Cube', 'Cuboid', 'Pyramid', 'Cylinder', 'Cone')
 option = st.selectbox('Select a shape:', options=options)
 
 
@@ -193,50 +199,59 @@ if option == 'Circle':
     r = st.number_input('Radius:', value=25)
     figure = Circle(radius=r)
 elif option == 'Square':
-    side = st.number_input('Side:', value=40)
+    side = st.number_input('Side A:', value=40)
     figure = Square(a=side)
 elif option == 'Rectangle':
-    a = st.number_input('A:', value=30)
-    b = st.number_input('B:', value=40)
+    a = st.number_input('Side A:', value=30)
+    b = st.number_input('Side B:', value=40)
     figure = Rectangle(a=a, b=b)
 elif option == 'Triangle':
-    a = st.number_input('A:', value=20)
-    b = st.number_input('B:', value=30)
-    c = st.number_input('C:', value=40)
+    a = st.number_input('Side A:', value=20)
+    b = st.number_input('Side B:', value=30)
+    c = st.number_input('Side C:', value=40)
     figure = Triangle(a=a, b=b, c=c)
 elif option == 'Trapezoid':
-    a = st.number_input('A:', value=30)
-    b = st.number_input('B:', value=40)
-    h = st.number_input('H:', value=20)
+    a = st.number_input('Top base:', value=30)
+    b = st.number_input('Bottom base:', value=40)
+    h = st.number_input('Height:', value=20)
     figure = Trapezoid(a=a, b=b, height=h)
 elif option == 'Rhombus':
-    a = st.number_input('A:', value=40)
-    h = st.number_input('H:', value=30)
+    a = st.number_input('Side A:', value=40)
+    h = st.number_input('Height:', value=30)
     figure = Rhombus(a=a, h=h)
 elif option == 'Sphere':
     r = st.number_input('Radius:', value=15)
     figure = Sphere(radius=r)
 elif option == 'Cube':
-    a = st.number_input('A:', value=15)
+    a = st.number_input('Side A:', value=15)
     figure = Cube(a=a)
 elif option == 'Cuboid':
-    a = st.number_input('A:', value=15)
-    b = st.number_input('B:', value=20)
-    c = st.number_input('C:', value=25)
+    a = st.number_input('Length:', value=15)
+    b = st.number_input('Width:', value=20)
+    c = st.number_input('Height:', value=25)
     figure = Cuboid(a=a, b=b, c=c)
 elif option == 'Pyramid':
-    a = st.number_input('A:', value=30)
-    h = st.number_input('H:', value=40)
+    a = st.number_input('Side A:', value=30)
+    h = st.number_input('Height:', value=40)
     figure = Pyramid(a=a, h=h)
 elif option == 'Cylinder':
     r = st.number_input('Radius:', value=20)
-    h = st.number_input('H:', value=40)
+    h = st.number_input('Height:', value=40)
     figure = Cylinder(radius=r, h=h)
 elif option == 'Cone':
     r = st.number_input('Radius:', value=20)
-    h = st.number_input('H:', value=40)
+    h = st.number_input('Height:', value=40)
     figure = Cone(radius=r, h=h)
-    st.write(figure.volume())
 
-if figure:
-    write_visualization(figure)
+try:
+    if figure:
+        st.caption('Result:')
+        st.write('Area:', figure.area())
+        if isinstance(figure, Flat):
+            st.write('Perimeter:', figure.perimeter())
+        elif isinstance(figure, Solid):
+            st.write('Volume:', figure.volume())
+        write_visualization(figure)
+except Exception as e:
+    st.error(f'Error: {e}')
+    sys.stderr.write(f"Exception: {e}" + os.linesep)
