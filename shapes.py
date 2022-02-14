@@ -106,7 +106,7 @@ class Triangle(Flat):
         super().__init__(a, b, c)
         (a, b, c) = sorted((a, b, c))
         if a + b <= c:
-            raise ValueError("Invalid triangle size")
+            raise ValueError("Invalid triangle size.")
         self.a = a
         self.b = b
         self.c = c
@@ -133,7 +133,7 @@ class Triangle(Flat):
         params = {1: (self.b, self.c, self.a), 2: (
             self.a, self.c, self.b), 3: (self.a, self.b, self.c)}
         if side_number not in params.keys():
-            raise ValueError('Invalid side')
+            raise ValueError('Invalid side.')
         return Triangle.__calculate_median(*params.get(side_number))
 
 
@@ -169,6 +169,8 @@ class Rhombus(Flat):
 
     @classmethod
     def from_side_and_angle(cls, side, angle):
+        if not 0 < angle <= 180:
+            raise ValueError('Invalid angle.')
         height = side * sin(angle * pi / 180)
         return cls(a=side, height=height)
 

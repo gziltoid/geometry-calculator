@@ -57,51 +57,51 @@ def render_page():
     try:
         figure = None
         if option == 'Circle':
-            r = st.number_input('Radius:', value=25, min_value=0)
+            r = st.number_input('Radius:', value=25, min_value=1)
             figure = Circle(radius=r)
         elif option == 'Square':
-            a = st.number_input('Side:', value=40, min_value=0)
+            a = st.number_input('Side:', value=40, min_value=1)
             figure = Square(a=a)
         elif option == 'Rectangle':
-            a = st.number_input('Side A:', value=30, min_value=0)
-            b = st.number_input('Side B:', value=40, min_value=0)
+            a = st.number_input('Side A:', value=30, min_value=1)
+            b = st.number_input('Side B:', value=40, min_value=1)
             figure = Rectangle(a=a, b=b)
         elif option == 'Triangle':
-            a = st.number_input('Side A:', value=20, min_value=0)
-            b = st.number_input('Side B:', value=30, min_value=0)
-            c = st.number_input('Side C:', value=40, min_value=0)
+            a = st.number_input('Side A:', value=20, min_value=1)
+            b = st.number_input('Side B:', value=30, min_value=1)
+            c = st.number_input('Side C:', value=40, min_value=1)
             figure = Triangle(a=a, b=b, c=c)
         elif option == 'Trapezoid':
-            a = st.number_input('Top base:', value=30, min_value=0)
-            b = st.number_input('Bottom base:', value=40, min_value=0)
-            h = st.number_input('Height:', value=20, min_value=0)
+            a = st.number_input('Top base:', value=30, min_value=1)
+            b = st.number_input('Bottom base:', value=40, min_value=1)
+            h = st.number_input('Height:', value=20, min_value=1)
             figure = Trapezoid(a=a, b=b, height=h)
         elif option == 'Rhombus':
-            a = st.number_input('Side:', value=40, min_value=0)
-            h = st.number_input('Height:', value=30, min_value=0)
+            a = st.number_input('Side:', value=40, min_value=1)
+            h = st.number_input('Height:', value=30, min_value=1)
             figure = Rhombus(a=a, height=h)
         elif option == 'Sphere':
-            r = st.number_input('Radius:', value=15, min_value=0)
+            r = st.number_input('Radius:', value=15, min_value=1)
             figure = Sphere(radius=r)
         elif option == 'Cube':
-            a = st.number_input('Side:', value=15, min_value=0)
+            a = st.number_input('Side:', value=15, min_value=1)
             figure = Cube(a=a)
         elif option == 'Cuboid':
-            a = st.number_input('Length:', value=15, min_value=0)
-            b = st.number_input('Width:', value=20, min_value=0)
-            h = st.number_input('Height:', value=25, min_value=0)
+            a = st.number_input('Length:', value=15, min_value=1)
+            b = st.number_input('Width:', value=20, min_value=1)
+            h = st.number_input('Height:', value=25, min_value=1)
             figure = Cuboid(length=a, width=b, height=h)
         elif option == 'Pyramid':
-            a = st.number_input('Base edge:', value=30, min_value=0)
-            h = st.number_input('Height:', value=40, min_value=0)
+            a = st.number_input('Base edge:', value=30, min_value=1)
+            h = st.number_input('Height:', value=40, min_value=1)
             figure = Pyramid(a=a, height=h)
         elif option == 'Cylinder':
-            r = st.number_input('Radius:', value=20, min_value=0)
-            h = st.number_input('Height:', value=40, min_value=0)
+            r = st.number_input('Radius:', value=20, min_value=1)
+            h = st.number_input('Height:', value=40, min_value=1)
             figure = Cylinder(radius=r, height=h)
         elif option == 'Cone':
-            r = st.number_input('Radius:', value=20, min_value=0)
-            h = st.number_input('Height:', value=40, min_value=0)
+            r = st.number_input('Radius:', value=20, min_value=1)
+            h = st.number_input('Height:', value=40, min_value=1)
             figure = Cone(radius=r, height=h)
 
         if figure:

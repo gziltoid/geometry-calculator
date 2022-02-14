@@ -72,6 +72,12 @@ def test_invalid_params():
         Circle(radius=-5)
     with pytest.raises(ValueError):
         Cone(radius=5, height=-10)
+    with pytest.raises(ValueError):
+        Rhombus.from_side_and_angle(side=10, angle=0)
+    with pytest.raises(ValueError):
+        Rhombus.from_side_and_angle(side=10, angle=-10)
+    with pytest.raises(ValueError):
+        Rhombus.from_side_and_angle(side=10, angle=190)
 
     
 
