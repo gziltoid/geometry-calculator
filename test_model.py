@@ -31,6 +31,9 @@ def test_model():
     assert rhombus.name == 'Rhombus'
     assert rhombus.area == 150
 
+    rhombus = Rhombus.from_side_and_angle(side=10, angle=30)
+    assert rhombus.area == 49.99999999999999
+
     sphere = Sphere(radius=5)
     assert sphere.name == 'Sphere'
     assert sphere.area == 314.1592653589793
@@ -41,7 +44,7 @@ def test_model():
     assert cube.area == 150
     assert cube.volume == 125
 
-    cuboid = Cuboid(a=5, b=10, c=15)
+    cuboid = Cuboid(width=5, length=10, height=15)
     assert cuboid.name == 'Cuboid'
     assert cuboid.area == 550
     assert cuboid.volume == 750

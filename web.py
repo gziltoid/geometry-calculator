@@ -143,7 +143,7 @@ def write_visualization(figure):
     elif isinstance(figure, Sphere):
         obj = create_sphere_mesh(figure.radius)
     elif isinstance(figure, Cuboid):
-        obj = create_cuboid_mesh(figure.a, figure.b, figure.c)
+        obj = create_cuboid_mesh(figure.width, figure.length, figure.height)
     elif isinstance(figure, Cube):
         obj = create_cube_mesh(figure.a)
     elif isinstance(figure, Pyramid):
@@ -229,7 +229,7 @@ elif option == 'Cuboid':
     a = st.number_input('Length:', value=15)
     b = st.number_input('Width:', value=20)
     c = st.number_input('Height:', value=25)
-    figure = Cuboid(a=a, b=b, c=c)
+    figure = Cuboid(width=a, length=b, height=c)
 elif option == 'Pyramid':
     a = st.number_input('Side A:', value=30)
     h = st.number_input('Height:', value=40)

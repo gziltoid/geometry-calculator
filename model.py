@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from math import pi
+from math import pi, sin
 
 
 class Shape(ABC):
@@ -87,7 +87,6 @@ class Rectangle(Flat):
 
 class Triangle(Flat):
 
-    # TODO base height
     def __init__(self, a, b, c):
         self.a = a
         self.b = b
@@ -135,6 +134,11 @@ class Rhombus(Flat):
     def __init__(self, a, h):
         self.a = a
         self.height = h
+
+    @classmethod
+    def from_side_and_angle(cls, side, angle):
+        height = side * sin(angle * pi / 180)
+        return cls(a=side, h=height)
 
     @property
     def name(self):
@@ -189,10 +193,10 @@ class Cube(Solid):
 
 class Cuboid(Solid):
 
-    def __init__(self, a, b, c):
-        self.a = a
-        self.b = b
-        self.c = c
+    def __init__(self, length, width, height):
+        self.length = length
+        self.width = width
+        self.height = height
 
     @property
     def name(self):
@@ -200,19 +204,18 @@ class Cuboid(Solid):
 
     @property
     def area(self):
-        return 2 * (self.a * self.b + self.b * self.c + self.a * self.c)
+        return 2 * (self.width * self.length + self.length * self.height + self.width * self.height)
 
     @property
     def volume(self):
-        return self.a * self.b * self.c
+        return self.width * self.length * self.height
 
 
 class Pyramid(Solid):
     '''Square Pyramid'''
 
     def __init__(self, a, h):
-        '''h: height
-        a: side length'''
+        '''a - base edge, h - height'''
         self.a = a
         self.height = h
 
