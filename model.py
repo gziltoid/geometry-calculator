@@ -8,18 +8,21 @@ class Shape(ABC):
     def name(self):
         pass
 
+    @property
     @abstractmethod
     def area(self):
         pass
 
 
 class Flat(Shape):
+    @property
     @abstractmethod
     def perimeter(self):
         pass
 
 
 class Solid(Shape):
+    @property
     @abstractmethod
     def volume(self):
         pass
@@ -28,41 +31,42 @@ class Solid(Shape):
 # Flat shapes
 
 class Circle(Flat):
-    __name = 'Circle'
 
     def __init__(self, radius):
         self.radius = radius
 
     @property
     def name(self):
-        return self.__name
+        return 'Circle'
 
+    @property
     def area(self):
         return self.radius ** 2 * pi
 
+    @property
     def perimeter(self):
         return 2 * pi * self.radius
 
 
 class Square(Flat):
-    __name = 'Square'
 
     def __init__(self, a):
         self.a = a
 
     @property
     def name(self):
-        return self.__name
+        return 'Square'
 
+    @property
     def area(self):
         return self.a ** 2
 
+    @property
     def perimeter(self):
         return 4 * self.a
 
 
 class Rectangle(Flat):
-    __name = 'Rectangle'
 
     def __init__(self, a, b):
         self.a = a
@@ -70,17 +74,18 @@ class Rectangle(Flat):
 
     @property
     def name(self):
-        return self.__name
+        return 'Rectangle'
 
+    @property
     def area(self):
         return self.a * self.b
 
+    @property
     def perimeter(self):
         return 2 * (self.a + self.b)
 
 
 class Triangle(Flat):
-    __name = 'Triangle'
 
     # TODO base height
     def __init__(self, a, b, c):
@@ -90,21 +95,21 @@ class Triangle(Flat):
 
     @property
     def name(self):
-        return self.__name
+        return 'Triangle'
 
+    @property
     def area(self):
         '''Heron's formula'''
-        p = 0.5 * self.perimeter()
+        p = 0.5 * self.perimeter
         return (p * (p - self.a) * (p - self.b) * (p - self.c)) ** 0.5
 
+    @property
     def perimeter(self):
         return self.a + self.b + self.c
 
 
 class Trapezoid(Flat):
-    __name = 'Trapezoid'
 
-    # TODO c, d
     def __init__(self, a, b, height):
         '''a, b - bases'''
         self.a = a
@@ -113,18 +118,19 @@ class Trapezoid(Flat):
 
     @property
     def name(self):
-        return self.__name
+        return 'Trapezoid'
 
+    @property
     def area(self):
         return 0.5 * (self.a + self.b) * self.height
 
+    @property
     def perimeter(self):
-        # P = a + b + c + d
-        pass
+        side = self.height ** 2 + (abs(self.a - self.b) / 2) ** 2
+        return self.a + self.b + 2 * side
 
 
 class Rhombus(Flat):
-    __name = 'Rhombus'
 
     def __init__(self, a, h):
         self.a = a
@@ -132,11 +138,13 @@ class Rhombus(Flat):
 
     @property
     def name(self):
-        return self.__name
+        return 'Rhombus'
 
+    @property
     def area(self):
         return self.a * self.height
 
+    @property
     def perimeter(self):
         return 4 * self.a
 
@@ -144,41 +152,42 @@ class Rhombus(Flat):
 # Solid shapes
 
 class Sphere(Solid):
-    __name = 'Sphere'
 
     def __init__(self, radius):
         self.radius = radius
 
     @property
     def name(self):
-        return self.__name
+        return 'Sphere'
 
+    @property
     def area(self):
         return self.radius ** 2 * 4 * pi
 
+    @property
     def volume(self):
         return self.radius ** 3 * pi * 4/3
 
 
 class Cube(Solid):
-    __name = 'Cube'
 
     def __init__(self, a):
         self.a = a
 
     @property
     def name(self):
-        return self.__name
+        return 'Cube'
 
+    @property
     def area(self):
         return self.a ** 2 * 6
 
+    @property
     def volume(self):
         return self.a ** 3
 
 
 class Cuboid(Solid):
-    __name = 'Cuboid'
 
     def __init__(self, a, b, c):
         self.a = a
@@ -187,18 +196,19 @@ class Cuboid(Solid):
 
     @property
     def name(self):
-        return self.__name
+        return 'Cuboid'
 
+    @property
     def area(self):
         return 2 * (self.a * self.b + self.b * self.c + self.a * self.c)
 
+    @property
     def volume(self):
         return self.a * self.b * self.c
 
 
 class Pyramid(Solid):
     '''Square Pyramid'''
-    __name = 'Pyramid'
 
     def __init__(self, a, h):
         '''h: height
@@ -208,17 +218,18 @@ class Pyramid(Solid):
 
     @property
     def name(self):
-        return self.__name
+        return 'Pyramid'
 
+    @property
     def area(self):
         return self.a * (self.a + (self.a ** 2 + self.height ** 2 * 4) ** 0.5)
 
+    @property
     def volume(self):
         return self.a ** 2 * self.height * 1/3
 
 
 class Cylinder(Solid):
-    __name = 'Cylinder'
 
     def __init__(self, radius, h):
         self.radius = radius
@@ -226,17 +237,18 @@ class Cylinder(Solid):
 
     @property
     def name(self):
-        return self.__name
+        return 'Cylinder'
 
+    @property
     def area(self):
         return 2 * pi * self.radius * (self.height + self.radius)
 
+    @property
     def volume(self):
         return self.radius ** 2 * pi * self.height
 
 
 class Cone(Solid):
-    __name = 'Cone'
 
     def __init__(self, radius, h):
         self.radius = radius
@@ -244,10 +256,12 @@ class Cone(Solid):
 
     @property
     def name(self):
-        return self.__name
+        return 'Cone'
 
+    @property
     def area(self):
         return pi * self.radius * (self.radius + (self.radius ** 2 + self.height ** 2) ** 0.5)
 
+    @property
     def volume(self):
         return self.radius ** 2 * pi * self.height * 1/3

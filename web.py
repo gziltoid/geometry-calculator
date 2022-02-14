@@ -246,12 +246,13 @@ elif option == 'Cone':
 try:
     if figure:
         st.caption('Result:')
-        st.write('Area:', figure.area())
+        st.write('Area:', figure.area)
         if isinstance(figure, Flat):
-            st.write('Perimeter:', figure.perimeter())
+            st.write('Perimeter:', figure.perimeter)
         elif isinstance(figure, Solid):
-            st.write('Volume:', figure.volume())
+            st.write('Volume:', figure.volume)
         write_visualization(figure)
 except Exception as e:
     st.error(f'Error: {e}')
+    st.exception(e)
     sys.stderr.write(f"Exception: {e}" + os.linesep)
