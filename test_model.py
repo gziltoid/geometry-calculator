@@ -63,3 +63,14 @@ def test_model():
     assert cone.name == 'Cone'
     assert cone.area == 254.160184615763
     assert cone.volume == 261.79938779914943
+
+
+def test_invalid_params():
+    with pytest.raises(ValueError):
+        Triangle(a=1, b=2, c=3)
+
+def test_triangle_median():
+    triangle = Triangle(a=20, b=30, c=40)
+    assert round(triangle.get_median(side_number=1), 2) == 33.91
+    assert round(triangle.get_median(side_number=2), 2) == 27.84
+    assert round(triangle.get_median(side_number=3), 2) == 15.81

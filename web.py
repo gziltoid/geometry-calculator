@@ -46,7 +46,7 @@ def calculate_third_triangle_point(alpha, beta, c):
 
 def create_triangle_mesh(a, b, c):
     (a, b, c) = sorted((a, b, c))
-    if a + b < c:
+    if a + b <= c:
         raise ValueError("Invalid triangle size")
     alpha = acos((b ** 2 + c ** 2 - a ** 2) / (2.0 * b * c))
     beta = acos((-b ** 2 + c ** 2 + a ** 2) / (2.0 * a * c))
@@ -243,15 +243,24 @@ elif option == 'Cone':
     h = st.number_input('Height:', value=40)
     figure = Cone(radius=r, h=h)
 
+
 try:
     if figure:
         st.caption('Result:')
         st.write('Area:', figure.area)
         if isinstance(figure, Flat):
             st.write('Perimeter:', figure.perimeter)
+            if isinstance(figure, Triangle):
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.write('Median 1:', figure.get_median(1))
+                with col2:
+                    st.write('Median 2:', figure.get_median(2))
+                with col3:
+                    st.write('Median 3:', figure.get_median(3))
         elif isinstance(figure, Solid):
             st.write('Volume:', figure.volume)
-        write_visualization(figure)
+            write_visualization(figure)
 except Exception as e:
     st.error(f'Error: {e}')
     st.exception(e)

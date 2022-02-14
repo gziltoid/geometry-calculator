@@ -28,7 +28,8 @@ class Solid(Shape):
         pass
 
 
-# Flat shapes
+'''Flat shapes'''
+
 
 class Circle(Flat):
 
@@ -88,6 +89,9 @@ class Rectangle(Flat):
 class Triangle(Flat):
 
     def __init__(self, a, b, c):
+        (a, b, c) = sorted((a, b, c))
+        if a + b <= c:
+            raise ValueError("Invalid triangle size")
         self.a = a
         self.b = b
         self.c = c
@@ -105,6 +109,17 @@ class Triangle(Flat):
     @property
     def perimeter(self):
         return self.a + self.b + self.c
+
+    @staticmethod
+    def __calculate_median(a, b, c):
+        return 0.5 * (2 * a ** 2 + 2 * b ** 2 - c ** 2) ** 0.5
+
+    def get_median(self, side_number):
+        params = {1: (self.b, self.c, self.a), 2: (
+            self.a, self.c, self.b), 3: (self.a, self.b, self.c)}
+        if side_number not in params.keys():
+            raise ValueError('Invalid side')
+        return Triangle.__calculate_median(*params.get(side_number))
 
 
 class Trapezoid(Flat):
@@ -153,7 +168,8 @@ class Rhombus(Flat):
         return 4 * self.a
 
 
-# Solid shapes
+'''Solid shapes'''
+
 
 class Sphere(Solid):
 
