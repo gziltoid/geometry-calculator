@@ -59,7 +59,6 @@ class MeshFactory:
 
     @staticmethod
     def __create_trapezoid_mesh(a, b, h):
-        # (a, b) = sorted((a, b))
         x = (a + b) / 2
         return MeshFactory.__create_2d_mesh(
             (0, 0, 0),
@@ -115,30 +114,31 @@ class MeshFactory:
         return MeshFactory.__create_3d_mesh(THREE.ConeGeometry(radius, height, radialSegments=60))
 
     @staticmethod
-    # TODO match case
     def create_mesh(figure):
-        if isinstance(figure, Circle):
-            return MeshFactory.__create_circle_mesh(figure.radius)
-        elif isinstance(figure, Rectangle):
-            return MeshFactory.__create_rectangle_mesh(figure.a, figure.b)
-        elif isinstance(figure, Square):
-            return MeshFactory.__create_square_mesh(figure.a)
-        elif isinstance(figure, Triangle):
-            return MeshFactory.__create_triangle_mesh(figure.a, figure.b, figure.c)
-        elif isinstance(figure, Trapezoid):
-            return MeshFactory.__create_trapezoid_mesh(figure.a, figure.b, figure.height)
-        elif isinstance(figure, Rhombus):
-            return MeshFactory.__create_rhombus_mesh(figure.a, figure.height)
-        elif isinstance(figure, Sphere):
-            return MeshFactory.__create_sphere_mesh(figure.radius)
-        elif isinstance(figure, Cuboid):
-            return MeshFactory.__create_cuboid_mesh(figure.width, figure.length, figure.height)
-        elif isinstance(figure, Cube):
-            return MeshFactory.__create_cube_mesh(figure.a)
-        elif isinstance(figure, Pyramid):
-            return MeshFactory.__create_pyramid_mesh(figure.a, figure.height)
-        elif isinstance(figure, Cylinder):
-            return MeshFactory.__create_cylinder_mesh(figure.radius, figure.height)
-        elif isinstance(figure, Cone):
-            return MeshFactory.__create_cone_mesh(figure.radius, figure.height)
-        return None
+        match figure:
+            case Circle():
+                return MeshFactory.__create_circle_mesh(figure.radius)
+            case Rectangle():
+                return MeshFactory.__create_rectangle_mesh(figure.a, figure.b)
+            case Square():
+                return MeshFactory.__create_square_mesh(figure.a)
+            case Triangle():
+                return MeshFactory.__create_triangle_mesh(figure.a, figure.b, figure.c)
+            case Trapezoid():
+                return MeshFactory.__create_trapezoid_mesh(figure.a, figure.b, figure.height)
+            case Rhombus():
+                return MeshFactory.__create_rhombus_mesh(figure.a, figure.height)
+            case Sphere():
+                return MeshFactory.__create_sphere_mesh(figure.radius)
+            case Cuboid():
+                return MeshFactory.__create_cuboid_mesh(figure.width, figure.length, figure.height)
+            case Cube():
+                return MeshFactory.__create_cube_mesh(figure.a)
+            case Pyramid():
+                return MeshFactory.__create_pyramid_mesh(figure.a, figure.height)
+            case Cylinder():
+                return MeshFactory.__create_cylinder_mesh(figure.radius, figure.height)
+            case Cone():
+                return MeshFactory.__create_cone_mesh(figure.radius, figure.height)
+            case _:
+                return None

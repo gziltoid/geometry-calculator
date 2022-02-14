@@ -165,7 +165,7 @@ class Rhombus(Flat):
     @classmethod
     def from_side_and_angle(cls, side, angle):
         if not 0 < angle <= 180:
-            raise ValueError('Invalid angle.')
+            raise ValueError('Invalid rhombus angle.')
         height = side * sin(angle * pi / 180)
         return cls(a=side, height=height)
 
