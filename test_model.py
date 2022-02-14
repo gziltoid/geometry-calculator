@@ -1,5 +1,5 @@
 import pytest
-from model import Circle, Cone, Cube, Cuboid, Cylinder, Pyramid, Rectangle, Rhombus, Square, Sphere, Trapezoid, Triangle
+from shapes import Circle, Cone, Cube, Cuboid, Cylinder, Pyramid, Rectangle, Rhombus, Square, Sphere, Trapezoid, Triangle
 
 
 def test_model():
