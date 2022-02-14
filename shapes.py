@@ -3,6 +3,11 @@ from math import pi, sin
 
 
 class Shape(ABC):
+    @abstractmethod
+    def __init__(self, args):
+        if any(arg <= 0 for arg in args):
+            raise ValueError("Parameters can't be negative.")
+
     @property
     @abstractmethod
     def name(self):
@@ -15,6 +20,9 @@ class Shape(ABC):
 
 
 class Flat(Shape):
+    def __init__(self, *args):
+        super().__init__(args)
+
     @property
     @abstractmethod
     def perimeter(self):
@@ -22,6 +30,9 @@ class Flat(Shape):
 
 
 class Solid(Shape):
+    def __init__(self, *args):
+        super().__init__(args)
+
     @property
     @abstractmethod
     def volume(self):
@@ -34,6 +45,7 @@ class Solid(Shape):
 class Circle(Flat):
 
     def __init__(self, radius):
+        super().__init__(radius)
         self.radius = radius
 
     @property
@@ -42,7 +54,7 @@ class Circle(Flat):
 
     @property
     def area(self):
-        return self.radius ** 2 * pi
+        return pi * self.radius ** 2
 
     @property
     def perimeter(self):
@@ -52,6 +64,7 @@ class Circle(Flat):
 class Square(Flat):
 
     def __init__(self, a):
+        super().__init__(a)
         self.a = a
 
     @property
@@ -70,6 +83,7 @@ class Square(Flat):
 class Rectangle(Flat):
 
     def __init__(self, a, b):
+        super().__init__(a, b)
         self.a = a
         self.b = b
 
@@ -89,6 +103,7 @@ class Rectangle(Flat):
 class Triangle(Flat):
 
     def __init__(self, a, b, c):
+        super().__init__(a, b, c)
         (a, b, c) = sorted((a, b, c))
         if a + b <= c:
             raise ValueError("Invalid triangle size")
@@ -126,6 +141,7 @@ class Trapezoid(Flat):
 
     def __init__(self, a, b, height):
         '''a, b - bases'''
+        super().__init__(a, b, height)
         self.a = a
         self.b = b
         self.height = height
@@ -146,14 +162,15 @@ class Trapezoid(Flat):
 
 class Rhombus(Flat):
 
-    def __init__(self, a, h):
+    def __init__(self, a, height):
+        super().__init__(a, height)
         self.a = a
-        self.height = h
+        self.height = height
 
     @classmethod
     def from_side_and_angle(cls, side, angle):
         height = side * sin(angle * pi / 180)
-        return cls(a=side, h=height)
+        return cls(a=side, height=height)
 
     @property
     def name(self):
@@ -174,6 +191,7 @@ class Rhombus(Flat):
 class Sphere(Solid):
 
     def __init__(self, radius):
+        super().__init__(radius)
         self.radius = radius
 
     @property
@@ -182,16 +200,17 @@ class Sphere(Solid):
 
     @property
     def area(self):
-        return self.radius ** 2 * 4 * pi
+        return 4 * pi * self.radius ** 2
 
     @property
     def volume(self):
-        return self.radius ** 3 * pi * 4/3
+        return 4/3 * pi * self.radius ** 3
 
 
 class Cube(Solid):
 
     def __init__(self, a):
+        super().__init__(a)
         self.a = a
 
     @property
@@ -200,7 +219,7 @@ class Cube(Solid):
 
     @property
     def area(self):
-        return self.a ** 2 * 6
+        return 6 * self.a ** 2
 
     @property
     def volume(self):
@@ -210,6 +229,7 @@ class Cube(Solid):
 class Cuboid(Solid):
 
     def __init__(self, length, width, height):
+        super().__init__(length, width, height)
         self.length = length
         self.width = width
         self.height = height
@@ -230,10 +250,11 @@ class Cuboid(Solid):
 class Pyramid(Solid):
     '''Square Pyramid'''
 
-    def __init__(self, a, h):
-        '''a - base edge, h - height'''
+    def __init__(self, a, height):
+        '''a - base edge'''
+        super().__init__(a, height)
         self.a = a
-        self.height = h
+        self.height = height
 
     @property
     def name(self):
@@ -250,9 +271,10 @@ class Pyramid(Solid):
 
 class Cylinder(Solid):
 
-    def __init__(self, radius, h):
+    def __init__(self, radius, height):
+        super().__init__(radius, height)
         self.radius = radius
-        self.height = h
+        self.height = height
 
     @property
     def name(self):
@@ -269,9 +291,10 @@ class Cylinder(Solid):
 
 class Cone(Solid):
 
-    def __init__(self, radius, h):
+    def __init__(self, radius, height):
+        super().__init__(radius, height)
         self.radius = radius
-        self.height = h
+        self.height = height
 
     @property
     def name(self):

@@ -18,7 +18,7 @@ def write_visualization(figure, is_3d=False):
     if not obj:
         return
 
-    camera_pos = (60, 60, 60) if is_3d else (0, 0, 100)
+    camera_pos = (60, 60, 90) if is_3d else (0, 0, 100)
     camera = THREE.CombinedCamera(
         position=camera_pos, width=VISUALIZATION_VIEW_WIDTH, height=VISUALIZATION_VIEW_HEIGHT)
     camera.lookAt((0, 0, 0))
@@ -35,7 +35,7 @@ def write_visualization(figure, is_3d=False):
 
     renderer = THREE.Renderer(scene=scene, camera=camera, controls=[orbit],
                               width=VISUALIZATION_VIEW_WIDTH, height=VISUALIZATION_VIEW_HEIGHT)
-    # shape visualization block
+    # embed shape visualization block
     snippet = embed.embed_snippet(views=renderer)
     html = embed.html_template.format(title="Shape", snippet=snippet)
     components.html(html, width=VISUALIZATION_VIEW_WIDTH,
@@ -57,52 +57,52 @@ def render_page():
     try:
         figure = None
         if option == 'Circle':
-            r = st.number_input('Radius:', value=25)
+            r = st.number_input('Radius:', value=25, min_value=0)
             figure = Circle(radius=r)
         elif option == 'Square':
-            side = st.number_input('Side:', value=40)
-            figure = Square(a=side)
+            a = st.number_input('Side:', value=40, min_value=0)
+            figure = Square(a=a)
         elif option == 'Rectangle':
-            a = st.number_input('Side A:', value=30)
-            b = st.number_input('Side B:', value=40)
+            a = st.number_input('Side A:', value=30, min_value=0)
+            b = st.number_input('Side B:', value=40, min_value=0)
             figure = Rectangle(a=a, b=b)
         elif option == 'Triangle':
-            a = st.number_input('Side A:', value=20)
-            b = st.number_input('Side B:', value=30)
-            c = st.number_input('Side C:', value=40)
+            a = st.number_input('Side A:', value=20, min_value=0)
+            b = st.number_input('Side B:', value=30, min_value=0)
+            c = st.number_input('Side C:', value=40, min_value=0)
             figure = Triangle(a=a, b=b, c=c)
         elif option == 'Trapezoid':
-            a = st.number_input('Top base:', value=30)
-            b = st.number_input('Bottom base:', value=40)
-            h = st.number_input('Height:', value=20)
+            a = st.number_input('Top base:', value=30, min_value=0)
+            b = st.number_input('Bottom base:', value=40, min_value=0)
+            h = st.number_input('Height:', value=20, min_value=0)
             figure = Trapezoid(a=a, b=b, height=h)
         elif option == 'Rhombus':
-            a = st.number_input('Side:', value=40)
-            h = st.number_input('Height:', value=30)
-            figure = Rhombus(a=a, h=h)
+            a = st.number_input('Side:', value=40, min_value=0)
+            h = st.number_input('Height:', value=30, min_value=0)
+            figure = Rhombus(a=a, height=h)
         elif option == 'Sphere':
-            r = st.number_input('Radius:', value=15)
+            r = st.number_input('Radius:', value=15, min_value=0)
             figure = Sphere(radius=r)
         elif option == 'Cube':
-            a = st.number_input('Side:', value=15)
+            a = st.number_input('Side:', value=15, min_value=0)
             figure = Cube(a=a)
         elif option == 'Cuboid':
-            a = st.number_input('Length:', value=15)
-            b = st.number_input('Width:', value=20)
-            c = st.number_input('Height:', value=25)
-            figure = Cuboid(length=a, width=b, height=c)
+            a = st.number_input('Length:', value=15, min_value=0)
+            b = st.number_input('Width:', value=20, min_value=0)
+            h = st.number_input('Height:', value=25, min_value=0)
+            figure = Cuboid(length=a, width=b, height=h)
         elif option == 'Pyramid':
-            a = st.number_input('Base edge:', value=30)
-            h = st.number_input('Height:', value=40)
-            figure = Pyramid(a=a, h=h)
+            a = st.number_input('Base edge:', value=30, min_value=0)
+            h = st.number_input('Height:', value=40, min_value=0)
+            figure = Pyramid(a=a, height=h)
         elif option == 'Cylinder':
-            r = st.number_input('Radius:', value=20)
-            h = st.number_input('Height:', value=40)
-            figure = Cylinder(radius=r, h=h)
+            r = st.number_input('Radius:', value=20, min_value=0)
+            h = st.number_input('Height:', value=40, min_value=0)
+            figure = Cylinder(radius=r, height=h)
         elif option == 'Cone':
-            r = st.number_input('Radius:', value=20)
-            h = st.number_input('Height:', value=40)
-            figure = Cone(radius=r, h=h)
+            r = st.number_input('Radius:', value=20, min_value=0)
+            h = st.number_input('Height:', value=40, min_value=0)
+            figure = Cone(radius=r, height=h)
 
         if figure:
             st.caption('Result:')
@@ -111,7 +111,7 @@ def render_page():
             if isinstance(figure, Flat):
                 st.write('Perimeter:', round_float(figure.perimeter))
                 if isinstance(figure, Triangle):
-                    # create columns to show values in a row
+                    # create columns to show values side-by-side
                     col1, col2, col3 = st.columns(3)
                     with col1:
                         st.write('Median A:', round_float(

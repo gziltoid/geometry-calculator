@@ -27,7 +27,7 @@ def test_model():
     assert trapezoid.area == 45
     assert trapezoid.perimeter == 99.5
 
-    rhombus = Rhombus(a=10, h=15)
+    rhombus = Rhombus(a=10, height=15)
     assert rhombus.name == 'Rhombus'
     assert rhombus.area == 150
 
@@ -49,17 +49,17 @@ def test_model():
     assert cuboid.area == 550
     assert cuboid.volume == 750
 
-    pyramid = Pyramid(a=5, h=10)
+    pyramid = Pyramid(a=5, height=10)
     assert pyramid.name == 'Pyramid'
     assert pyramid.area == 128.07764064044153
     assert pyramid.volume == 83.33333333333333
 
-    cylinder = Cylinder(radius=5, h=10)
+    cylinder = Cylinder(radius=5, height=10)
     assert cylinder.name == 'Cylinder'
     assert cylinder.area == 471.23889803846896
     assert cylinder.volume == 785.3981633974483
 
-    cone = Cone(radius=5, h=10)
+    cone = Cone(radius=5, height=10)
     assert cone.name == 'Cone'
     assert cone.area == 254.160184615763
     assert cone.volume == 261.79938779914943
@@ -68,6 +68,12 @@ def test_model():
 def test_invalid_params():
     with pytest.raises(ValueError):
         Triangle(a=1, b=2, c=3)
+    with pytest.raises(ValueError):
+        Circle(radius=-5)
+    with pytest.raises(ValueError):
+        Cone(radius=5, height=-10)
+
+    
 
 
 def test_triangle_median():
