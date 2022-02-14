@@ -27,9 +27,9 @@ def test_model():
     assert trapezoid.area == 45
     assert trapezoid.perimeter == 99.5
 
-    rhombus = Rhombus(a=10, height=15)
+    rhombus = Rhombus(a=10, height=5)
     assert rhombus.name == 'Rhombus'
-    assert rhombus.area == 150
+    assert rhombus.area == 50
 
     rhombus = Rhombus.from_side_and_angle(side=10, angle=30)
     assert rhombus.area == 49.99999999999999
@@ -65,6 +65,13 @@ def test_model():
     assert cone.volume == 261.79938779914943
 
 
+def test_triangle_median():
+    triangle = Triangle(a=20, b=30, c=40)
+    assert round(triangle.get_median(side_index=1), 2) == 33.91
+    assert round(triangle.get_median(side_index=2), 2) == 27.84
+    assert round(triangle.get_median(side_index=3), 2) == 15.81
+
+
 def test_invalid_params():
     with pytest.raises(ValueError):
         Triangle(a=1, b=2, c=3)
@@ -78,12 +85,5 @@ def test_invalid_params():
         Rhombus.from_side_and_angle(side=10, angle=-10)
     with pytest.raises(ValueError):
         Rhombus.from_side_and_angle(side=10, angle=190)
-
-    
-
-
-def test_triangle_median():
-    triangle = Triangle(a=20, b=30, c=40)
-    assert round(triangle.get_median(side_number=1), 2) == 33.91
-    assert round(triangle.get_median(side_number=2), 2) == 27.84
-    assert round(triangle.get_median(side_number=3), 2) == 15.81
+    with pytest.raises(ValueError):
+        Rhombus(a=10, height=15)

@@ -6,7 +6,7 @@ class Shape(ABC):
     @abstractmethod
     def __init__(self, args):
         if any(arg <= 0 for arg in args):
-            raise ValueError("Parameters can't be negative.")
+            raise ValueError("Parameters should be positive.")
 
     @property
     @abstractmethod
@@ -61,25 +61,6 @@ class Circle(Flat):
         return 2 * pi * self.radius
 
 
-class Square(Flat):
-
-    def __init__(self, a):
-        super().__init__(a)
-        self.a = a
-
-    @property
-    def name(self):
-        return 'Square'
-
-    @property
-    def area(self):
-        return self.a ** 2
-
-    @property
-    def perimeter(self):
-        return 4 * self.a
-
-
 class Rectangle(Flat):
 
     def __init__(self, a, b):
@@ -98,6 +79,16 @@ class Rectangle(Flat):
     @property
     def perimeter(self):
         return 2 * (self.a + self.b)
+
+
+class Square(Rectangle):
+
+    def __init__(self, a):
+        super().__init__(a, a)
+
+    @property
+    def name(self):
+        return 'Square'
 
 
 class Triangle(Flat):
@@ -129,12 +120,12 @@ class Triangle(Flat):
     def __calculate_median(a, b, c):
         return 0.5 * (2 * a ** 2 + 2 * b ** 2 - c ** 2) ** 0.5
 
-    def get_median(self, side_number):
+    def get_median(self, side_index):
         params = {1: (self.b, self.c, self.a), 2: (
             self.a, self.c, self.b), 3: (self.a, self.b, self.c)}
-        if side_number not in params.keys():
-            raise ValueError('Invalid side.')
-        return Triangle.__calculate_median(*params.get(side_number))
+        if side_index not in params.keys():
+            raise ValueError('Invalid side index.')
+        return Triangle.__calculate_median(*params.get(side_index))
 
 
 class Trapezoid(Flat):
@@ -142,6 +133,8 @@ class Trapezoid(Flat):
     def __init__(self, a, b, height):
         '''a, b - bases'''
         super().__init__(a, b, height)
+        if a == b:
+            raise ValueError('Invalid trapezoid base.')
         self.a = a
         self.b = b
         self.height = height
@@ -164,6 +157,8 @@ class Rhombus(Flat):
 
     def __init__(self, a, height):
         super().__init__(a, height)
+        if height > a:
+            raise ValueError("Invalid rhombus size.")
         self.a = a
         self.height = height
 
@@ -209,25 +204,6 @@ class Sphere(Solid):
         return 4/3 * pi * self.radius ** 3
 
 
-class Cube(Solid):
-
-    def __init__(self, a):
-        super().__init__(a)
-        self.a = a
-
-    @property
-    def name(self):
-        return 'Cube'
-
-    @property
-    def area(self):
-        return 6 * self.a ** 2
-
-    @property
-    def volume(self):
-        return self.a ** 3
-
-
 class Cuboid(Solid):
 
     def __init__(self, length, width, height):
@@ -247,6 +223,16 @@ class Cuboid(Solid):
     @property
     def volume(self):
         return self.width * self.length * self.height
+
+
+class Cube(Cuboid):
+
+    def __init__(self, a):
+        super().__init__(a, a, a)
+
+    @property
+    def name(self):
+        return 'Cube'
 
 
 class Pyramid(Solid):

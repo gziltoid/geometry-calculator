@@ -46,7 +46,7 @@ class MeshFactory:
     def __create_triangle_mesh(a, b, c):
         (a, b, c) = sorted((a, b, c))
         if a + b <= c:
-            raise ValueError("Invalid triangle size")
+            raise ValueError("Invalid triangle size.")
         alpha = acos((b ** 2 + c ** 2 - a ** 2) / (2.0 * b * c))
         beta = acos((-b ** 2 + c ** 2 + a ** 2) / (2.0 * a * c))
         (x, y) = MeshFactory.__calculate_third_triangle_point(alpha, beta, c)
@@ -59,7 +59,7 @@ class MeshFactory:
 
     @staticmethod
     def __create_trapezoid_mesh(a, b, h):
-        (a, b) = sorted((a, b))
+        # (a, b) = sorted((a, b))
         x = (a + b) / 2
         return MeshFactory.__create_2d_mesh(
             (0, 0, 0),
@@ -72,7 +72,7 @@ class MeshFactory:
     @staticmethod
     def __create_rhombus_mesh(a, h):
         if h > a:
-            raise ValueError("Invalid rhombus size")
+            raise ValueError("Invalid rhombus size.")
         x = sqrt(a ** 2 - h ** 2)
         return MeshFactory.__create_2d_mesh(
             (0, 0, 0),
