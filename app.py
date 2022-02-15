@@ -17,7 +17,6 @@ def write_visualization(shape, is_3d=False):
     obj = MeshFactory.create_mesh(shape)
     if not obj:
         return
-
     camera_pos = (60, 60, 90) if is_3d else (0, 0, 100)
     camera = THREE.CombinedCamera(
         position=camera_pos,
@@ -72,79 +71,82 @@ def render_page():
         "Cone",
     )
 
-    option = st.selectbox("Select a figure:", options=options)
+    option = st.selectbox("Select a shape:", options=options)
 
     try:
         match option:
             case "Circle":
                 r = st.number_input("Radius:", value=25, min_value=1)
-                figure = Circle(radius=r)
+                shape = Circle(radius=r)
             case "Square":
                 a = st.number_input("Side:", value=40, min_value=1)
-                figure = Square(a=a)
+                shape = Square(a=a)
             case "Rectangle":
                 a = st.number_input("Side A:", value=30, min_value=1)
                 b = st.number_input("Side B:", value=40, min_value=1)
-                figure = Rectangle(a=a, b=b)
+                shape = Rectangle(a=a, b=b)
             case "Triangle":
                 a = st.number_input("Side A:", value=20, min_value=1)
                 b = st.number_input("Side B:", value=30, min_value=1)
                 c = st.number_input("Side C:", value=40, min_value=1)
-                figure = Triangle(a=a, b=b, c=c)
+                shape = Triangle(a=a, b=b, c=c)
             case "Trapezoid":
                 a = st.number_input("Top base:", value=30, min_value=1)
                 b = st.number_input("Bottom base:", value=40, min_value=1)
                 h = st.number_input("Height:", value=20, min_value=1)
-                figure = Trapezoid(a=a, b=b, height=h)
+                shape = Trapezoid(a=a, b=b, height=h)
             case "Rhombus":
                 a = st.number_input("Side:", value=40, min_value=1)
                 h = st.number_input("Height:", value=30, min_value=1)
-                figure = Rhombus(a=a, height=h)
+                shape = Rhombus(a=a, height=h)
             case "Sphere":
                 r = st.number_input("Radius:", value=15, min_value=1)
-                figure = Sphere(radius=r)
+                shape = Sphere(radius=r)
             case "Cube":
                 a = st.number_input("Side:", value=15, min_value=1)
-                figure = Cube(a=a)
+                shape = Cube(a=a)
             case "Cuboid":
                 a = st.number_input("Length:", value=15, min_value=1)
                 b = st.number_input("Width:", value=20, min_value=1)
                 h = st.number_input("Height:", value=25, min_value=1)
-                figure = Cuboid(length=a, width=b, height=h)
+                shape = Cuboid(length=a, width=b, height=h)
             case "Pyramid":
                 a = st.number_input("Base edge:", value=30, min_value=1)
                 h = st.number_input("Height:", value=40, min_value=1)
-                figure = Pyramid(a=a, height=h)
+                shape = Pyramid(a=a, height=h)
             case "Cylinder":
                 r = st.number_input("Radius:", value=20, min_value=1)
                 h = st.number_input("Height:", value=40, min_value=1)
-                figure = Cylinder(radius=r, height=h)
+                shape = Cylinder(radius=r, height=h)
             case "Cone":
                 r = st.number_input("Radius:", value=20, min_value=1)
                 h = st.number_input("Height:", value=40, min_value=1)
-                figure = Cone(radius=r, height=h)
+                shape = Cone(radius=r, height=h)
             case _:
-                figure = None
+                shape = None
 
-        if figure:
+        if shape:
             st.caption("Result:")
-            st.write("Area:", round_float(figure.area))
-            match figure:
+            st.write("Area:", round_float(shape.area))
+            match shape:
                 case Flat():
-                    st.write("Perimeter:", round_float(figure.perimeter))
-                    if isinstance(figure, Triangle):
+                    st.write("Perimeter:", round_float(shape.perimeter))
+                    if isinstance(shape, Triangle):
                         # create columns to show median values in a row
                         col1, col2, col3 = st.columns(3)
                         with col1:
-                            st.write("Median A:", round_float(figure.get_median(1)))
+                            st.write("Median A:", round_float(
+                                shape.get_median(1)))
                         with col2:
-                            st.write("Median B:", round_float(figure.get_median(2)))
+                            st.write("Median B:", round_float(
+                                shape.get_median(2)))
                         with col3:
-                            st.write("Median C:", round_float(figure.get_median(3)))
-                    write_visualization(figure)
+                            st.write("Median C:", round_float(
+                                shape.get_median(3)))
+                    write_visualization(shape)
                 case Solid():
-                    st.write("Volume:", round_float(figure.volume))
-                    write_visualization(figure, is_3d=True)
+                    st.write("Volume:", round_float(shape.volume))
+                    write_visualization(shape, is_3d=True)
     except Exception as e:
         st.error(f"Error: {e}")
 
