@@ -1,10 +1,13 @@
+#!/usr/bin/env python3
 import os
 import sys
 
 import pythreejs as THREE
 import streamlit as st
+from streamlit import cli as stcli
 import streamlit.components.v1 as components
 from ipywidgets import embed
+
 
 from mesh_factory import MeshFactory
 from shapes import *
@@ -72,7 +75,7 @@ def render_page():
     )
 
     option = st.selectbox("Select a shape:", options=options)
-   
+
     # TODO positive_number_input(prompt, default_value)
     try:
         match option:
@@ -153,13 +156,13 @@ def render_page():
     except Exception as e:
         st.error(f"Error: {e}")
 
-# TODO run
-if __name__ == "__main__":
-    # try:
-    #     render_page()
-    # except Exception as e:
-    #     sys.stderr.write(f"Exception: {e}" + os.linesep)
 
-    import subprocess
-
-    subprocess.run(["streamlit", "./app.py"])
+if __name__ == '__main__':
+    if st._is_running_with_streamlit:
+        try:
+            render_page()
+        except Exception as e:
+            sys.stderr.write(f"Exception: {e}" + os.linesep)
+    else:
+        sys.argv = ["streamlit", "run", sys.argv[0]]
+        sys.exit(stcli.main())
