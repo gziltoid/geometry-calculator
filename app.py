@@ -72,7 +72,8 @@ def render_page():
     )
 
     option = st.selectbox("Select a shape:", options=options)
-
+   
+    # TODO positive_number_input(prompt, default_value)
     try:
         match option:
             case "Circle":
@@ -147,12 +148,18 @@ def render_page():
                 case Solid():
                     st.write("Volume:", round_float(shape.volume))
                     write_visualization(shape, is_3d=True)
+                case _:
+                    raise ValueError("Invalid shape.")
     except Exception as e:
         st.error(f"Error: {e}")
 
-
+# TODO run
 if __name__ == "__main__":
-    try:
-        render_page()
-    except Exception as e:
-        sys.stderr.write(f"Exception: {e}" + os.linesep)
+    # try:
+    #     render_page()
+    # except Exception as e:
+    #     sys.stderr.write(f"Exception: {e}" + os.linesep)
+
+    import subprocess
+
+    subprocess.run(["streamlit", "./app.py"])

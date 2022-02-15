@@ -1,5 +1,5 @@
 # Geometry Calculator
-A simple geometry calculator with 2D and 3D visualization of flat and solid figures such as:
+A simple geometry calculator with 2D and 3D visualization of flat and solid shapes such as:
 * circle
 * square
 * rectangle

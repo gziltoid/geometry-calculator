@@ -116,15 +116,12 @@ class Triangle(Flat):
     def __calculate_median(a, b, c):
         return 0.5 * (2 * a**2 + 2 * b**2 - c**2) ** 0.5
 
-    def get_median(self, side_index):
-        params = {
-            1: (self.b, self.c, self.a),
-            2: (self.a, self.c, self.b),
-            3: (self.a, self.b, self.c),
-        }
-        if side_index not in params.keys():
-            raise ValueError("Invalid side index.")
-        return Triangle.__calculate_median(*params.get(side_index))
+    def get_median(self, side_index=1):
+        match side_index:
+            case 1: return Triangle.__calculate_median(self.b, self.c, self.a)
+            case 2: return Triangle.__calculate_median(self.a, self.c, self.b)
+            case 3: return Triangle.__calculate_median(self.a, self.b, self.c)
+            case _: raise ValueError("Invalid side index.")
 
 
 class Trapezoid(Flat):

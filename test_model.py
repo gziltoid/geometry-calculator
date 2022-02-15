@@ -1,19 +1,6 @@
 import pytest
 
-from shapes import (
-    Circle,
-    Cone,
-    Cube,
-    Cuboid,
-    Cylinder,
-    Pyramid,
-    Rectangle,
-    Rhombus,
-    Square,
-    Sphere,
-    Trapezoid,
-    Triangle,
-)
+from shapes import *
 
 
 def test_model():
@@ -101,3 +88,5 @@ def test_invalid_params():
         Rhombus.from_side_and_angle(side=10, angle=190)
     with pytest.raises(ValueError):
         Rhombus(a=10, height=15)
+    with pytest.raises(ValueError):
+        Triangle(a=20, b=30, c=40).get_median(side_index=4)

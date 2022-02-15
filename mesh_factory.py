@@ -103,35 +103,35 @@ class MeshFactory:
         )
 
     @staticmethod
-    def create_mesh(figure):
-        match figure:
+    def create_mesh(shape):
+        match shape:
             case Circle():
-                return MeshFactory.__create_circle_mesh(figure.radius)
+                return MeshFactory.__create_circle_mesh(shape.radius)
             case Rectangle():
-                return MeshFactory.__create_rectangle_mesh(figure.a, figure.b)
+                return MeshFactory.__create_rectangle_mesh(shape.a, shape.b)
             case Square():
-                return MeshFactory.__create_square_mesh(figure.a)
+                return MeshFactory.__create_square_mesh(shape.a)
             case Triangle():
-                return MeshFactory.__create_triangle_mesh(figure.a, figure.b, figure.c)
+                return MeshFactory.__create_triangle_mesh(shape.a, shape.b, shape.c)
             case Trapezoid():
                 return MeshFactory.__create_trapezoid_mesh(
-                    figure.a, figure.b, figure.height
+                    shape.a, shape.b, shape.height
                 )
             case Rhombus():
-                return MeshFactory.__create_rhombus_mesh(figure.a, figure.height)
+                return MeshFactory.__create_rhombus_mesh(shape.a, shape.height)
             case Sphere():
-                return MeshFactory.__create_sphere_mesh(figure.radius)
+                return MeshFactory.__create_sphere_mesh(shape.radius)
             case Cuboid():
                 return MeshFactory.__create_cuboid_mesh(
-                    figure.width, figure.length, figure.height
+                    shape.width, shape.length, shape.height
                 )
             case Cube():
-                return MeshFactory.__create_cube_mesh(figure.a)
+                return MeshFactory.__create_cube_mesh(shape.a)
             case Pyramid():
-                return MeshFactory.__create_pyramid_mesh(figure.a, figure.height)
+                return MeshFactory.__create_pyramid_mesh(shape.a, shape.height)
             case Cylinder():
-                return MeshFactory.__create_cylinder_mesh(figure.radius, figure.height)
+                return MeshFactory.__create_cylinder_mesh(shape.radius, shape.height)
             case Cone():
-                return MeshFactory.__create_cone_mesh(figure.radius, figure.height)
+                return MeshFactory.__create_cone_mesh(shape.radius, shape.height)
             case _:
                 return None
