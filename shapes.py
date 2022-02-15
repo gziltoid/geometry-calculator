@@ -253,7 +253,7 @@ class Pyramid(Solid):
 
     @property
     def volume(self):
-        return self.a**2 * self.height * 1 / 3
+        return self.a**2 * self.height / 3
 
 
 class Cylinder(Solid):
@@ -295,4 +295,4 @@ class Cone(Solid):
 
     @property
     def volume(self):
-        return self.radius**2 * pi * self.height * 1 / 3
+        return self.radius**2 * pi * self.height / 3
