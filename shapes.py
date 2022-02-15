@@ -118,10 +118,14 @@ class Triangle(Flat):
 
     def get_median(self, side_index=1):
         match side_index:
-            case 1: return Triangle.__calculate_median(self.b, self.c, self.a)
-            case 2: return Triangle.__calculate_median(self.a, self.c, self.b)
-            case 3: return Triangle.__calculate_median(self.a, self.b, self.c)
-            case _: raise ValueError("Invalid side index.")
+            case 1:
+                return Triangle.__calculate_median(self.b, self.c, self.a)
+            case 2:
+                return Triangle.__calculate_median(self.a, self.c, self.b)
+            case 3:
+                return Triangle.__calculate_median(self.a, self.b, self.c)
+            case _:
+                raise ValueError("Invalid side index.")
 
 
 class Trapezoid(Flat):
@@ -198,10 +202,10 @@ class Sphere(Solid):
 
 
 class Cuboid(Solid):
-    def __init__(self, length, width, height):
-        super().__init__(length, width, height)
-        self.length = length
+    def __init__(self, width, length, height):
+        super().__init__(width, length, height)
         self.width = width
+        self.length = length
         self.height = height
 
     @property

@@ -123,7 +123,7 @@ class MeshFactory:
                 return MeshFactory.__create_sphere_mesh(shape.radius)
             case Cuboid():
                 return MeshFactory.__create_cuboid_mesh(
-                    shape.width, shape.length, shape.height
+                    shape.width, shape.height, shape.length
                 )
             case Cube():
                 return MeshFactory.__create_cube_mesh(shape.a)

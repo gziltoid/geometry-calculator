@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-import os
 import sys
+import os
 
 import pythreejs as THREE
 import streamlit as st
 from streamlit import cli as stcli
 import streamlit.components.v1 as components
 from ipywidgets import embed
-
 
 from mesh_factory import MeshFactory
 from shapes import *
@@ -76,55 +75,57 @@ def render_page():
 
     option = st.selectbox("Select a shape:", options=options)
 
-    # TODO positive_number_input(prompt, default_value)
+    def positive_number_input(prompt, default_value):
+        return st.number_input(prompt, value=default_value, min_value=1)
+
     try:
         match option:
             case "Circle":
-                r = st.number_input("Radius:", value=25, min_value=1)
+                r = positive_number_input("Radius:", default_value=25)
                 shape = Circle(radius=r)
             case "Square":
-                a = st.number_input("Side:", value=40, min_value=1)
+                a = positive_number_input("Side:", default_value=40)
                 shape = Square(a=a)
             case "Rectangle":
-                a = st.number_input("Side A:", value=30, min_value=1)
-                b = st.number_input("Side B:", value=40, min_value=1)
+                a = positive_number_input("Side A:", default_value=30)
+                b = positive_number_input("Side B:", default_value=40)
                 shape = Rectangle(a=a, b=b)
             case "Triangle":
-                a = st.number_input("Side A:", value=20, min_value=1)
-                b = st.number_input("Side B:", value=30, min_value=1)
-                c = st.number_input("Side C:", value=40, min_value=1)
+                a = positive_number_input("Side A:", default_value=20)
+                b = positive_number_input("Side B:", default_value=30)
+                c = positive_number_input("Side C:", default_value=40)
                 shape = Triangle(a=a, b=b, c=c)
             case "Trapezoid":
-                a = st.number_input("Top base:", value=30, min_value=1)
-                b = st.number_input("Bottom base:", value=40, min_value=1)
-                h = st.number_input("Height:", value=20, min_value=1)
+                a = positive_number_input("Top base:", default_value=30)
+                b = positive_number_input("Bottom base:", default_value=40)
+                h = positive_number_input("Height:", default_value=20)
                 shape = Trapezoid(a=a, b=b, height=h)
             case "Rhombus":
-                a = st.number_input("Side:", value=40, min_value=1)
-                h = st.number_input("Height:", value=30, min_value=1)
+                a = positive_number_input("Side:", default_value=40)
+                h = positive_number_input("Height:", default_value=30)
                 shape = Rhombus(a=a, height=h)
             case "Sphere":
-                r = st.number_input("Radius:", value=15, min_value=1)
+                r = positive_number_input("Radius:", default_value=15)
                 shape = Sphere(radius=r)
             case "Cube":
-                a = st.number_input("Side:", value=15, min_value=1)
+                a = positive_number_input("Side:", default_value=15)
                 shape = Cube(a=a)
             case "Cuboid":
-                a = st.number_input("Length:", value=15, min_value=1)
-                b = st.number_input("Width:", value=20, min_value=1)
-                h = st.number_input("Height:", value=25, min_value=1)
-                shape = Cuboid(length=a, width=b, height=h)
+                w = positive_number_input("Width:", default_value=20)
+                l = positive_number_input("Length:", default_value=40)
+                h = positive_number_input("Height:", default_value=25)
+                shape = Cuboid(width=w, length=l, height=h)
             case "Pyramid":
-                a = st.number_input("Base edge:", value=30, min_value=1)
-                h = st.number_input("Height:", value=40, min_value=1)
+                a = positive_number_input("Base edge:", default_value=30)
+                h = positive_number_input("Height:", default_value=40)
                 shape = Pyramid(a=a, height=h)
             case "Cylinder":
-                r = st.number_input("Radius:", value=20, min_value=1)
-                h = st.number_input("Height:", value=40, min_value=1)
+                r = positive_number_input("Radius:", default_value=20)
+                h = positive_number_input("Height:", default_value=40)
                 shape = Cylinder(radius=r, height=h)
             case "Cone":
-                r = st.number_input("Radius:", value=20, min_value=1)
-                h = st.number_input("Height:", value=40, min_value=1)
+                r = positive_number_input("Radius:", default_value=20)
+                h = positive_number_input("Height:", default_value=40)
                 shape = Cone(radius=r, height=h)
             case _:
                 shape = None
@@ -139,14 +140,11 @@ def render_page():
                         # create columns to show median values in a row
                         col1, col2, col3 = st.columns(3)
                         with col1:
-                            st.write("Median A:", round_float(
-                                shape.get_median(1)))
+                            st.write("Median A:", round_float(shape.get_median(1)))
                         with col2:
-                            st.write("Median B:", round_float(
-                                shape.get_median(2)))
+                            st.write("Median B:", round_float(shape.get_median(2)))
                         with col3:
-                            st.write("Median C:", round_float(
-                                shape.get_median(3)))
+                            st.write("Median C:", round_float(shape.get_median(3)))
                     write_visualization(shape)
                 case Solid():
                     st.write("Volume:", round_float(shape.volume))
@@ -157,7 +155,7 @@ def render_page():
         st.error(f"Error: {e}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if st._is_running_with_streamlit:
         try:
             render_page()
