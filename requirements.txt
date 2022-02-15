@@ -1,5 +1,5 @@
-numpy~=1.22.2
+numpy
 pythreejs~=2.3.0
 streamlit~=1.5.1
 ipywidgets~=7.6.5
-pytest
+pytest==7.0.0
